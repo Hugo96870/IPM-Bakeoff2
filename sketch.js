@@ -186,7 +186,7 @@ function drawTarget(i)
   }
   else if(trials[current_trial + 1] === i){
     noStroke();
-    fill(color(205,150,150));
+    fill(color(120,120,120));
     circle(target.x, target.y, target.w);
     
     
@@ -195,7 +195,7 @@ function drawTarget(i)
   // should be trying to select
   else{
     noStroke()
-    fill(color(155,155,155));               
+    fill(color(255,255,255));              
     circle(target.x, target.y, target.w);
   }
 }
