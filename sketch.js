@@ -175,14 +175,8 @@ function drawTarget(i)
   // Check whether this target is the target the user should be trying to select
   if (trials[current_trial] === i) 
   { 
-    // Highlights the target the user should be trying to select
-    // with a white border
     
     let NextTarget = getTargetBounds(trials[current_trial + 1]);
-    
-    noStroke();
-    fill(color(255,0,0));
-    circle(target.x, target.y, target.w);
 
     if (trials[current_trial] === trials[current_trial+1]){
         fill(color(255,255,255));
@@ -190,10 +184,18 @@ function drawTarget(i)
         text('2x',target.x-14,target.y-23);
     }
     else{
-        stroke(20000);
-        fill(color(0,0,255));
+        stroke(color(120,120,120));
+        strokeWeight(10)
         line(target.x, target.y, NextTarget.x, NextTarget.y);
     }
+    
+    stroke(color(120,120,120));
+    strokeWeight(10)
+    line(mouseX, mouseY, target.x, target.y);
+    
+    noStroke();
+    fill(color(255,0,0));
+    circle(target.x, target.y, target.w);
   
     // Remember you are allowed to access targets (i-1) and (i+1)
     // if this is the target the user should be trying to select
