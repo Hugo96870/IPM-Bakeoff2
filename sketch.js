@@ -167,6 +167,7 @@ function mousePressed()
 // Draw target on-screen
 function drawTarget(i)
 {
+  let a,b,c,d;
   // Get the location and size for target (i)
   let target = getTargetBounds(i);             
 
@@ -175,10 +176,14 @@ function drawTarget(i)
   { 
     // Highlights the target the user should be trying to select
     // with a white border
-    stroke(color(255,255,255));
-    strokeWeight(5);
+    noStroke();
     fill(color(255,0,0));
     circle(target.x, target.y, target.w);
+    if (trials[current_trial] === trials[current_trial+1]){
+        fill(color(255,255,255));
+        textSize(25);
+        text('2x',target.x-14,target.y-23);
+    }
     
     // Remember you are allowed to access targets (i-1) and (i+1)
     // if this is the target the user should be trying to select
@@ -189,7 +194,6 @@ function drawTarget(i)
     fill(color(120,120,120));
     circle(target.x, target.y, target.w);
     
-    
   }
   // Does not draw a border if this is not the target the user
   // should be trying to select
@@ -197,6 +201,8 @@ function drawTarget(i)
     noStroke()
     fill(color(255,255,255));              
     circle(target.x, target.y, target.w);
+    fill(color(144,0,0,80));
+    circle(mouseX, mouseY, (target.w-15));
   }
 }
 
