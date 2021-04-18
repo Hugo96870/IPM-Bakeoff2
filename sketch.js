@@ -28,6 +28,11 @@ let current_trial    = 0;      // the current trial number (indexes into trials 
 let attempt          = 0;      // users complete each test twice to account for practice (attemps 0 and 1)
 let fitts_IDs        = [];     // add the Fitts ID for each selection here (-1 when there is a miss)
 
+// Sound variables
+var rightSound = new Audio("right.mp3");
+var wrongSound = new Audio("wrong.mp3");
+
+
 // Target class (position and width)
 class Target
 {
@@ -128,9 +133,12 @@ function printAndSavePerformance()
   }
 }
 
+
+
 // Mouse button was pressed - lets test to see if hit was in the correct target
 function mousePressed() 
 {
+  
   // Only look for mouse releases during the actual test
   // (i.e., during target selections)
   if (draw_targets)
@@ -140,8 +148,14 @@ function mousePressed()
     
     // Check to see if the mouse cursor is inside the target bounds,
     // increasing either the 'hits' or 'misses' counters
-    if (dist(target.x, target.y, mouseX, mouseY) < target.w/2)  hits++;                                                       
-    else misses++;
+     if (dist(target.x, target.y, mouseX, mouseY) < target.w/2){
+      rightSound.play();
+      hits++;
+    }                                                         
+    else{
+      wrongSound.play();
+      misses++;
+    } 
     
     current_trial++;                 // Move on to the next trial/target
     
@@ -190,7 +204,7 @@ function drawTarget(i)
     }
     
     stroke(color(120,120,120));
-    strokeWeight(10)
+    strokeWeight(7);
     line(mouseX, mouseY, target.x, target.y);
     
     noStroke();
@@ -205,9 +219,6 @@ function drawTarget(i)
     noStroke();
     fill(color(120,120,120));
     circle(target.x, target.y, target.w);
-    c = target.x;
-    d = target.y;
-    
   }
   // Does not draw a border if this is not the target the user
   // should be trying to select
@@ -215,10 +226,7 @@ function drawTarget(i)
     noStroke();
     fill(color(255,255,255));              
     circle(target.x, target.y, target.w);
-    fill(color(144,0,0,80));
-    circle(mouseX, mouseY, (target.w-15));
   }
-  
 }
 
 // Returns the location and size of a given target
