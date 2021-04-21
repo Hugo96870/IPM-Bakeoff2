@@ -134,6 +134,23 @@ function printAndSavePerformance()
 }
 
 
+function indexCalculator(current_trial, miss){
+  let distance;
+  let index;
+  
+  let current = getTargetBounds(trials[current_trial]);
+  let previous = getTargetBounds(trials[current_trial - 1]);
+ 
+  distance = dist(current.x, current.y, previous.x, previous.y);
+  index = (log((distance/current.w) + 1) / log(2));
+  if(miss === 0){
+    fitts_IDs[current_trial]=-1;
+  }
+  else{
+    fitts_IDs[current_trial]=index;
+  }
+  
+}
 
 // Mouse button was pressed - lets test to see if hit was in the correct target
 function mousePressed() 
@@ -143,17 +160,22 @@ function mousePressed()
   // (i.e., during target selections)
   if (draw_targets)
   {
+    var x = mouseX;
+    var y = mouseY;
     // Get the location and size of the target the user should be trying to select
+      
     let target = getTargetBounds(trials[current_trial]);   
     
     // Check to see if the mouse cursor is inside the target bounds,
     // increasing either the 'hits' or 'misses' counters
-     if (dist(target.x, target.y, mouseX, mouseY) < target.w/2){
+    if (dist(target.x, target.y, mouseX, mouseY) < target.w/2){
       rightSound.play();
+      indexCalculator(current_trial,1);
       hits++;
     }                                                         
     else{
       wrongSound.play();
+      indexCalculator(current_trial,0);
       misses++;
     } 
     
@@ -174,6 +196,33 @@ function mousePressed()
         continue_button.mouseReleased(continueTest);
         continue_button.position(width/2 - continue_button.size().width/2, height/2 - continue_button.size().height/2);
       }
+      text("Fitts IDs:",width/2, 480);
+      let j = 550;
+      for(i = 0; i < 10; i++){
+        text(i + ":" + round(fitts_IDs[i],5), 150, j);
+        j = j + 30;
+      }
+      j = 550;
+      for(i = 10; i < 20; i++){
+        text(i + ":" + round(fitts_IDs[i],5), 450, j);
+        j = j + 30;
+      }
+      j = 550;
+      for(i = 20; i < 30; i++){
+        text(i + ":" + round(fitts_IDs[i],5), 750, j);
+        j = j + 30;
+      }
+      j = 550;
+      for(i = 30; i < 40; i++){
+        text(i + ":" + round(fitts_IDs[i],5), 1050, j);
+        j = j + 30;
+      }
+      j = 550;
+      for(i = 40; i < trials.length; i++){
+        text(i + ":" + round(fitts_IDs[i],5), 1350, j);
+        j = j + 30;
+      }
+      
     } 
   }
 }
@@ -192,24 +241,25 @@ function drawTarget(i)
     
     let NextTarget = getTargetBounds(trials[current_trial + 1]);
 
-    if (trials[current_trial] === trials[current_trial+1]){
-        fill(color(255,255,255));
-        textSize(25);
-        text('2x',target.x-14,target.y-23);
-    }
-    else{
+    if (trials[current_trial] !== trials[current_trial+1]){
         stroke(color(120,120,120));
         strokeWeight(10)
         line(target.x, target.y, NextTarget.x, NextTarget.y);
     }
     
-    stroke(color(120,120,120));
+    stroke(color(255,0,0));
     strokeWeight(7);
     line(mouseX, mouseY, target.x, target.y);
     
     noStroke();
     fill(color(255,0,0));
     circle(target.x, target.y, target.w);
+    
+    if (trials[current_trial] === trials[current_trial+1]){
+        fill(color(255,255,255));
+        textSize(30);
+        text('2x',(target.x-16),(target.y+10));
+    }
   
     // Remember you are allowed to access targets (i-1) and (i+1)
     // if this is the target the user should be trying to select
