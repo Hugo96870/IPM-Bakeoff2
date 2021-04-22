@@ -32,6 +32,9 @@ let fitts_IDs        = [];     // add the Fitts ID for each selection here (-1 w
 var rightSound = new Audio("right.mp3");
 var wrongSound = new Audio("wrong.mp3");
 
+var posX = 0;
+var posY = 0;
+
 
 // Target class (position and width)
 class Target
@@ -134,16 +137,13 @@ function printAndSavePerformance()
 }
 
 
-function indexCalculator(current_trial, miss){
+function indexCalculator(current_trial, miss, posX, posY){
   let distance;
   let index;
   
   let current = getTargetBounds(trials[current_trial]);
   let previous = getTargetBounds(trials[current_trial - 1]);
-  if(current_trial === 0)
-    distance = dist(current.x, current.y, 0, 0);
-  else
-    distance = dist(current.x, current.y, previous.x, previous.y);
+  distance = dist(current.x, current.y, posX, posY);
   index = (log((distance/current.w) + 1) / log(2));
   if(miss === 0){
     fitts_IDs[current_trial]=-1;
@@ -170,12 +170,12 @@ function mousePressed()
     // increasing either the 'hits' or 'misses' counters
     if (dist(target.x, target.y, mouseX, mouseY) < target.w/2){
       rightSound.play();
-      indexCalculator(current_trial,1);
+      indexCalculator(current_trial,1, posX, posY);
       hits++;
     }                                                         
     else{
       wrongSound.play();
-      indexCalculator(current_trial,0);
+      indexCalculator(current_trial,0, posX, posY);
       misses++;
     } 
     
@@ -225,6 +225,8 @@ function mousePressed()
       
     } 
   }
+  posX = mouseX;
+  posY = mouseY;
 }
 
 // Draw target on-screen
