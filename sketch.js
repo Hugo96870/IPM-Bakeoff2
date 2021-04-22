@@ -140,8 +140,10 @@ function indexCalculator(current_trial, miss){
   
   let current = getTargetBounds(trials[current_trial]);
   let previous = getTargetBounds(trials[current_trial - 1]);
- 
-  distance = dist(current.x, current.y, previous.x, previous.y);
+  if(current_trial === 0)
+    distance = dist(current.x, current.y, 0, 0);
+  else
+    distance = dist(current.x, current.y, previous.x, previous.y);
   index = (log((distance/current.w) + 1) / log(2));
   if(miss === 0){
     fitts_IDs[current_trial]=-1;
@@ -160,8 +162,6 @@ function mousePressed()
   // (i.e., during target selections)
   if (draw_targets)
   {
-    var x = mouseX;
-    var y = mouseY;
     // Get the location and size of the target the user should be trying to select
       
     let target = getTargetBounds(trials[current_trial]);   
@@ -199,27 +199,27 @@ function mousePressed()
       text("Fitts IDs:",width/2, 480);
       let j = 550;
       for(i = 0; i < 10; i++){
-        text(i + ":" + round(fitts_IDs[i],5), 150, j);
+        text((i+1) + ":  " + round(fitts_IDs[i],3), 150, j);
         j = j + 30;
       }
       j = 550;
       for(i = 10; i < 20; i++){
-        text(i + ":" + round(fitts_IDs[i],5), 450, j);
+        text((i+1) + ":  " + round(fitts_IDs[i],3), 450, j);
         j = j + 30;
       }
       j = 550;
       for(i = 20; i < 30; i++){
-        text(i + ":" + round(fitts_IDs[i],5), 750, j);
+        text((i+1) + ":  " + round(fitts_IDs[i],3), 750, j);
         j = j + 30;
       }
       j = 550;
       for(i = 30; i < 40; i++){
-        text(i + ":" + round(fitts_IDs[i],5), 1050, j);
+        text((i+1) + ":  " + round(fitts_IDs[i],3), 1050, j);
         j = j + 30;
       }
       j = 550;
       for(i = 40; i < trials.length; i++){
-        text(i + ":" + round(fitts_IDs[i],5), 1350, j);
+        text((i+1) + ":  " + round(fitts_IDs[i],3), 1350, j);
         j = j + 30;
       }
       
