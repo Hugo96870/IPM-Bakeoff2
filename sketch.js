@@ -148,6 +148,9 @@ function indexCalculator(current_trial, miss, posX, posY){
   if(miss === 0){
     fitts_IDs[current_trial]=-1;
   }
+  else if(current_trial === 0){
+    fitts_IDs[current_trial]=-2;
+  }
   else{
     fitts_IDs[current_trial]=index;
   }
