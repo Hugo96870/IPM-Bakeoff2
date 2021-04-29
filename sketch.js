@@ -253,11 +253,13 @@ function drawTarget(i)
     strokeWeight(7);
     line(mouseX, mouseY, target.x, target.y);
     
-    noStroke();
+    stroke(color(255,255,255));
+    strokeWeight(5);
     fill(color(255,0,0));
     circle(target.x, target.y, target.w);
     
     if (trials[current_trial] === trials[current_trial+1]){
+        noStroke();
         fill(color(255,255,255));
         textSize(30);
         text('2x',(target.x-16),(target.y+10));
